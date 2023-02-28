@@ -17,6 +17,16 @@ class App extends Component {
     filter: '',
   };
 
+  nameVerification = name => {
+    const { contacts } = this.state;
+    for (let contact of contacts) {
+      if (contact.name === name) {
+        alert(`${name} is already in contacts!`);
+        return true;
+      }
+    }
+  };
+
   formSubmitHandler = data => {
     const newContact = {
       id: nanoid(),
@@ -24,26 +34,11 @@ class App extends Component {
       number: data.number,
     };
 
+    if (this.nameVerification(newContact.name)) return;
+
     this.setState(prevState => ({
-      contacts: prevState.contacts.find(contact => {
-        if (contact.name === newContact.name) {
-          // newContact
-          //  { prevState.contacts, newContact}
-          // prevState.contacts = [newContact, ...prevState.contacts]
-          // console.log(prevState.contacts);
-          return alert('Contact is already in contacts!');
-        } else {
-          return null;
-          //  this.state.contacts = [newContact, ...prevState.contacts]
-        }
-      }),
-      // eslint-disable-next-line 
       contacts: [newContact, ...prevState.contacts],
-
-
-      // contacts: [newContact, ...prevState.contacts],
     }));
-    // console.log(this.state.contacts);
   };
 
   changeFilter = e => {
